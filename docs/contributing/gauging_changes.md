@@ -34,6 +34,11 @@ these rules:
 | On PRs                | latest commit on `main` | PR commit with `main` merged |
 | On pushes (main only) | latest PyPI version     | the pushed commit            |
 
+```{note}
+Except for manually triggered runs, `preview=True` is forcefully set for all projects so
+we can gauge the impact ahead of time (which is literally the purpose of this workflow).
+```
+
 Once finished, a PR comment will be posted embedding a summary of the changes and links
 to further information. If there's a pre-existing diff-shades comment, it'll be updated
 instead the next time the workflow is triggered on the same PR.

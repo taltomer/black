@@ -185,6 +185,10 @@ def config(
     set_output("baseline-setup-cmd", baseline_cmd)
     set_output("target-analysis", target_name + ".json")
     set_output("target-setup-cmd", target_cmd)
+    # Except for manually triggered runs, it's more useful to force --preview for all
+    # projects so we can gauge the impact ahead of time (which is literally the purpose
+    # of this workflow).
+    set_output("extra-args", "" if event == "workflow_dispatch" else "--preview")
 
     key = f"{platform.system()}-{platform.python_version()}-{diff_shades.__version__}"
     key += f"-{baseline_name}-{baseline_args.encode('utf-8').hex()}"

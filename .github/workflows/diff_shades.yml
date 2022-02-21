@@ -3,10 +3,10 @@ name: diff-shades
 on:
   push:
     branches: [main]
-    paths-ignore: ["docs/**", "tests/**", "**.md", "**.rst"]
+    paths: ["src/**", "setup.*", "pyproject.toml", ".github/workflows/*"]
 
   pull_request:
-    paths-ignore: ["docs/**", "tests/**", "**.md", "**.rst"]
+    paths: ["src/**", "setup.*", "pyproject.toml", ".github/workflows/*"]
 
   workflow_dispatch:
     inputs:
@@ -88,7 +88,8 @@ jobs:
         if: steps.baseline-cache.outputs.cache-hit != 'true'
         run: >
           diff-shades analyze -v --work-dir projects-cache/
-          ${{ steps.config.outputs.baseline-analysis }} -- ${{ github.event.inputs.baseline-args }}
+          ${{ steps.config.outputs.baseline-analysis }} --
+          ${{ steps.config.outputs.extra-args }} ${{ github.event.inputs.baseline-args }}
 
       - name: Build and install target revision
         env:
@@ -102,7 +103,8 @@ jobs:
         run: >
           diff-shades analyze -v --work-dir projects-cache/
           ${{ steps.config.outputs.target-analysis }} --repeat-projects-from
-          ${{ steps.config.outputs.baseline-analysis }} -- ${{ github.event.inputs.target-args }}
+          ${{ steps.config.outputs.baseline-analysis }} --
+          ${{ steps.config.outputs.extra-args }} ${{ github.event.inputs.target-args }}
 
       - name: Generate HTML diff report
         run: >
