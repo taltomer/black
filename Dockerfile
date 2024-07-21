@@ -1,4 +1,4 @@
-FROM python:3-slim AS builder
+FROM python:3.13.0b3-slim AS builder
 
 RUN mkdir /src
 COPY . /src/
@@ -8,7 +8,7 @@ RUN pip install --no-cache-dir --upgrade pip setuptools wheel \
     && cd /src \
     && pip install --user --no-cache-dir .[colorama,d]
 
-FROM python:3-slim
+FROM python:3.13.0b3-slim
 
 # copy only Python packages to limit the image size
 COPY --from=builder /root/.local /root/.local
